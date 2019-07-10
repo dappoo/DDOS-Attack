@@ -531,8 +531,8 @@ def usage():
     print BANNER
     print GOLDENEYE_BANNER
     print "{}/{}/{}".format(hari, bulan, tahun)
-    print ' USAGE: goldeneye <url> [OPTIONS]'
-    print
+    print ' USAGE: ./destroy.py <url> [OPTIONS]'
+    print 
     print ' OPTIONS:'
     print '\t Flag\t\t\tDescription\t\t\t\t\t\tDefault'
     print '\t -u, --useragents\tFile with user-agents to use\t\t\t\t(default: randomly generated)'
