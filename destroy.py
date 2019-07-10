@@ -1,23 +1,10 @@
 #!/usr/bin/env python
 
-BANNER = """
- ▄▄▄▄▄     ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄      ▄▄▄▄   ▄▄▄    ▄▄▄
- ██▀▀▀██   ██▀▀▀▀▀▀  ▄█▀▀▀▀█   ▀▀▀██▀▀▀  ██▀▀▀▀██   ██▀▀██   ██▄  ▄██ 
- ██    ██  ██        ██▄          ██     ██    ██  ██    ██   ██▄▄██  
- ██    ██  ███████    ▀████▄      ██     ███████   ██    ██    ▀██▀   
- ██    ██  ██             ▀██     ██     ██  ▀██▄  ██    ██     ██    
- ██▄▄▄██   ██▄▄▄▄▄▄  █▄▄▄▄▄█▀     ██     ██    ██   ██▄▄██      ██    
- ▀▀▀▀▀     ▀▀▀▀▀▀▀▀   ▀▀▀▀▀       ▀▀     ▀▀    ▀▀▀   ▀▀▀▀       ▀▀   
-                                                             by : BL4NK                                                                                                                                         
-tool ini sangat dangerous untuk DDOS attack
-
-@author : BL4NK
-
-"""
-
 from multiprocessing import Process, Manager, Pool
 import urlparse, ssl
 import sys, getopt, random, time, os
+from pyfiglet import Figlet
+banner = Figlet(font='roman')
 from datetime import datetime
 current = datetime.now()
 
@@ -135,7 +122,7 @@ class GoldenEye(object):
     def printHeader(self):
 
         # Taunt!
-        print BANNER
+        print (banner.renderText('BL4NK'))
         print GOLDENEYE_BANNER
         print "{}/{}/{}".format(hari, bulan, tahun)
 
@@ -522,7 +509,7 @@ class Striker(Process):
 def usage():
     print
     print '-----------------------------------------------------------------------------------------------------------'
-    print BANNER
+    print (banner.renderText('BL4NK'))
     print GOLDENEYE_BANNER
     print "{}/{}/{}".format(hari, bulan, tahun)
     print ' USAGE: ./destroy.py <url> [OPTIONS]'
