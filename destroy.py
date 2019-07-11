@@ -507,7 +507,8 @@ class Striker(Process):
 ####
 
 def usage():
-    print
+    printf "  \e[101m\e[1;77m:: kumpulan tool powerfull     ::\e[0m\n"
+    printf "  \e[101m\e[1;77m:: Thanks to Daffa Arif, Jackpot 0day exploit , MR.X::\e[0m\n
     print '-----------------------------------------------------------------------------------------------------------'
     print (banner.renderText('BL4NK'))
     print GOLDENEYE_BANNER
