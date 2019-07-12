@@ -5,5 +5,7 @@ Thanks To : Daffa_Arif , Jackpot 0day exploit
 
 # instalasi on termux
 $pkg update
+
 $pkg install python2
+
 $python2 destroy.py <url> Option
